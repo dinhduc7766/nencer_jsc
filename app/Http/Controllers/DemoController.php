@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use App\Models\Receipt;
 
 class DemoController extends Controller
 {
@@ -57,4 +59,73 @@ class DemoController extends Controller
         // dieu huong theo router
         return redirect('/demo-laravel');
     }
+
+    public function queryBuilder(Request $request) {
+        // SQL get all category
+        $categories = DB::table('categories')
+                ->where('created_at', '<>', 'null')
+                ->orderBy('id', 'DESC')
+                ->get();
+        // SQL get all receipts.
+        $receipts = DB::table('receipts')
+                ->select(
+                    'receipts.id', 'receipts.total_price', 'receipts.quantity',
+                    'receipts.note', 'receipts.delivery_date', 'receipts.type',
+                    'users.email',
+                    'storages.name',
+                    'logistics_providers.name',
+                    'categories.name'
+                )
+                ->join('users', 'receipts.user_id', '=', 'users.id')
+                ->join('categories', 'receipts.category_id', '=', 'categories.id')
+                ->join('storages', 'receipts.storage_id', '=', 'storages.id')
+                ->join('logistics_providers', 'receipts.logistics_provider_id', '=', 'logistics_providers.id')
+                ->where('users.created_at', '<>', 'null')
+                ->orderBy('users.id', 'DESC')
+                ->get();
+        //
+        $sqlTotal = DB::table('categories')
+                ->select(
+                    'categories.name',
+                    DB::raw('COUNT(receipts.id) AS total_receipts')
+                )
+                ->leftJoin('receipts', 'categories.id', '=', 'receipts.category_id')
+                ->where('receipts.category_id', '=', 'categories.id')
+                ->groupBy('categories.id', 'categories.name')
+                ->get();
+        return [
+            'categories' => $categories,
+            'receipts'   => $receipts,
+            'sqlTotal'   => $sqlTotal
+        ];   
+    }
+
+    public function eloquent(Request $request) {
+        $categories = Category::orderBy('id', 'DESC')
+                ->get();
+
+        $receipts = Receipt::select(
+                    'receipts.id', 'receipts.total_price', 'receipts.quantity',
+                    'receipts.note', 'receipts.delivery_date', 'receipts.type',
+                    'users.email',
+                    'storages.name',
+                    'logistics_providers.name',
+                    'categories.name'
+                )
+                ->join('users', 'receipts.user_id', '=', 'users.id')
+                ->join('categories', 'receipts.category_id', '=', 'categories.id')
+                ->join('storages', 'receipts.storage_id', '=', 'storages.id')
+                ->join('logistics_providers', 'receipts.logistics_provider_id', '=', 'logistics_providers.id')
+                ->where('users.created_at', '<>', 'null')
+                ->orderBy('users.id', 'DESC')
+                ->get();
+
+        $relations = Category::with('receipts', 'receipts.storage', 'receipts.category')->get();
+        return [
+            'categories' => $categories,
+            'receipts'   => $receipts,
+            'relations'  => $relations
+        ];
+    }
+
 }

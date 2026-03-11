@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemoController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,7 @@ Route::get('/demo-laravel', [DemoController::class, 'index']);
 Route::get('/category/detail/{id}', [DemoController::class, 'detail']);
 Route::post('/category/update/{id}', [DemoController::class, 'update']);
 Route::get('/category/destroy/{id}', [DemoController::class, 'destroy']);
+Route::get('/query-builder', [DemoController::class, 'queryBuilder']);
+Route::get('eloquent', [DemoController::class, 'eloquent']);
+Route::get('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'postLogin']);
