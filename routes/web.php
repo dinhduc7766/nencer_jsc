@@ -19,9 +19,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/demo-laravel', [DemoController::class, 'index']);
-Route::get('/category/detail/{id}', [DemoController::class, 'detail']);
-Route::post('/category/update/{id}', [DemoController::class, 'update']);
-Route::get('/category/destroy/{id}', [DemoController::class, 'destroy']);
+
+// Gop router thanh 1 nhom.
+Route::group(['prefix' => 'category', 'middleware' => 'checkLogin'], function () {
+    Route::get('/detail/{id}', [DemoController::class, 'detail']);
+    Route::post('/update/{id}', [DemoController::class, 'update']);
+    Route::get('/destroy/{id}', [DemoController::class, 'destroy']);
+});
+
 Route::get('/query-builder', [DemoController::class, 'queryBuilder']);
 Route::get('eloquent', [DemoController::class, 'eloquent']);
 Route::get('/login', [AuthController::class, 'login']);
