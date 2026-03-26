@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashBoardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +28,12 @@ Route::group(['prefix' => 'category', 'middleware' => 'checkLogin'], function ()
     Route::get('/destroy/{id}', [DemoController::class, 'destroy']);
 });
 
+Route::group(['middleware' => 'checkLogin'], function() {
+    Route::get('/board', [DashBoardController::class, 'board']);
+});
+
 Route::get('/query-builder', [DemoController::class, 'queryBuilder']);
 Route::get('eloquent', [DemoController::class, 'eloquent']);
 Route::get('/login', [AuthController::class, 'login']);
 Route::post('/login', [AuthController::class, 'postLogin']);
+Route::get('/logout', [AuthController::class, 'logout']);

@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    //
     public function login() {
-        return view('login');
+        if (Auth::check()) {
+            return redirect('/board');
+        }
+        return view("auth.login");
     }
 
     public function postLogin(Request $request) {
@@ -22,12 +24,15 @@ class AuthController extends Controller
         ];
         if (Auth::attempt($credentials)) {
             // Login thanh cong
-            // Ghi log
-            // Yeu cau worker lam viec
-            dispatch(new AccessLog(Auth::user()->id));
-            dispatch(new DatabaseLog());
+            
             return redirect('/board');
         }
+        // Login that bai
+        return redirect('/login');
+    }
+
+    public function logout() {
+        Auth::logout();
         return redirect('/login');
     }
 }
