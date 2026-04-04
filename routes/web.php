@@ -3,6 +3,8 @@
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StorageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +32,21 @@ Route::group(['prefix' => 'category', 'middleware' => 'checkLogin'], function ()
 
 Route::group(['middleware' => 'checkLogin'], function() {
     Route::get('/board', [DashBoardController::class, 'board']);
+
+    // Router for categories.
+    Route::group(['prefix' => 'categories'], function () {
+        Route::get('/index', [CategoryController::class, 'index']);
+    });
+
+    // Router for storages.
+    Route::group(['prefix' => 'storages'], function () {
+        Route::get('/index', [StorageController::class, 'index']);
+        Route::get('/create', [StorageController::class, 'create']);
+        Route::post('/store', [StorageController::class, 'store']);
+        Route::get('/edit/{id}', [StorageController::class, 'edit']);
+        Route::post('/update/{id}', [StorageController::class, 'update']);
+        Route::get('/delete/{id}', [StorageController::class, 'delete']);
+    });
 });
 
 Route::get('/query-builder', [DemoController::class, 'queryBuilder']);

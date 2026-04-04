@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
 {
+    const InStock = 1;
+    const OutStock = 2;
+    const STATUS_PROCESSING = 0;
+    const STATUS_DONE = 1;
+
     use HasFactory;
 
     protected $table = 'receipts';
