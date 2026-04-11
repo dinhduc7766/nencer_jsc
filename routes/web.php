@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StorageController;
+use App\Http\Controllers\ReceiptsController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,17 @@ Route::group(['middleware' => 'checkLogin'], function() {
         Route::get('/edit/{id}', [StorageController::class, 'edit']);
         Route::post('/update/{id}', [StorageController::class, 'update']);
         Route::get('/delete/{id}', [StorageController::class, 'delete']);
+    });
+
+    //Router for receipt.
+    Route::group(['prefix' => 'receipts'], function () {
+        Route::post('/update/{id}', [ReceiptsController::class, 'update']);
+        Route::get('/export', [ReceiptsController::class, 'export']);
+    });
+
+    //Router for employee.
+    Route::group(['prefix' => 'employees'], function () {
+        Route::get('/index', [EmployeeController::class, 'index']);
     });
 });
 

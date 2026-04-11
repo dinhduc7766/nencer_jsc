@@ -34,10 +34,10 @@
                     </div>
                     <div class="col-md-6"></div>
                     <div class="col-md-4">
-                        <form action="" method="get">
+                        <form action="{{ url('/receipts/export')}}" method="get">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control" name="date">
+                                    <input type="date" required class="form-control" name="date">
                                 </div>
                                 <div class="col-md-4">
                                     <button class="btn btn-primary">Xuất đơn hàng</button>
@@ -67,7 +67,7 @@
                         @if (count($receipts) > 0) 
                         @foreach($receipts as $receipt)
                         <tr>
-                            <form action="{{ url('/receipts/edit/' . $receipt->id) }}" method="post">
+                            <form action="{{ url('/receipts/update/' . $receipt->id) }}" method="post">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <td>{{ $receipt->id }}</td>
                             <td>{{ $receipt->name }}</td>
