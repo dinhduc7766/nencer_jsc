@@ -59,6 +59,10 @@ Route::group(['middleware' => 'checkLogin'], function() {
     //Router for employee.
     Route::group(['prefix' => 'employees'], function () {
         Route::get('/index', [EmployeeController::class, 'index']);
+        Route::get('/create', [EmployeeController::class, 'create']);
+        Route::post('/store', [EmployeeController::class, 'store']);
+        Route::get('/detail/{id}', [EmployeeController::class, 'detail']);
+        Route::post('/update/{id}', [EmployeeController::class, 'update']);
     });
 });
 

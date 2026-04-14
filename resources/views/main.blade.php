@@ -17,5 +17,6 @@
     </div>
     <!-- End box login -->
     @include("layouts.footer")
+    @yield("custom-js")
 </body>
 </html>

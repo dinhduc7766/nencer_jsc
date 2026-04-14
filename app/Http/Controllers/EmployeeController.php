@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Storage;
+use App\Models\Receipt;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 class EmployeeController extends Controller
 {
@@ -31,7 +35,9 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        // Get all storages.
+        $storages = Storage::get();
+        return view('pages.employee.create', compact('storages'));
     }
 
     /**
@@ -39,15 +45,36 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $param = $request->all();
+        $user = new User();
+        $user->email = $param['email'];
+        $user->password = $param['password'];
+        $user->role = User::ROLE_EMPLOYEE;
+        $user->storage_id = $param['storages'];
+        $user->save();
+        return redirect('/employees/index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function detail(string $id)
     {
-        //
+        $employee = User::find($id);
+        $storages = Storage::all();
+        $receipts = Receipt::join(
+            'categories', 'receipts.category_id', 'categories.id'
+        )
+        ->select(
+            'receipts.id', 'receipts.name as receipt_name',
+            'categories.name as category_name',
+            'receipts.quantity', 'receipts.delivery_date',
+            'receipts.status'
+        )
+        ->where('user_id', $id)
+        ->orderBy('status', 'ASC')
+        ->paginate(30);
+        return view('pages.employee.detail', compact('employee', 'storages', 'receipts'));
     }
 
     /**
@@ -63,7 +90,12 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $param = $request->all();
+        $user = User::find($id);
+        $user->storage_id = $param['storage'];
+        $user->password = $param['password'];
+        $user->update();
+        return redirect('/employees/detail/' . $id);
     }
 
     /**
