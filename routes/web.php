@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StorageController;
-use App\Http\Controllers\ReceiptsController;
+use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
@@ -52,8 +52,10 @@ Route::group(['middleware' => 'checkLogin'], function() {
 
     //Router for receipt.
     Route::group(['prefix' => 'receipts'], function () {
-        Route::post('/update/{id}', [ReceiptsController::class, 'update']);
-        Route::get('/export', [ReceiptsController::class, 'export']);
+        Route::post('/update/{id}', [ReceiptController::class, 'update']);
+        Route::get('/export', [ReceiptController::class, 'export']);
+        Route::get('/index', [ReceiptController::class, 'index']);
+        Route::get('/detail/{id}', [ReceiptController::class, 'detail']);
     });
 
     //Router for employee.
@@ -64,6 +66,7 @@ Route::group(['middleware' => 'checkLogin'], function() {
         Route::get('/detail/{id}', [EmployeeController::class, 'detail']);
         Route::post('/update/{id}', [EmployeeController::class, 'update']);
     });
+
 });
 
 Route::get('/query-builder', [DemoController::class, 'queryBuilder']);
