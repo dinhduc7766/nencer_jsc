@@ -25,6 +25,7 @@ class EmployeeController extends Controller
             'storages', 'users.storage_id', 'storages.id'
         )->leftJoin('receipts', 'receipts.user_id', 'users.id')
         ->where('users.role', 0) // Lay ra employee
+        ->whereNull('users.deleted_at')
         ->groupBy('users.id', 'users.email', 'storages.name')
         ->get(); 
         return view('pages.employee.index', compact('employees'));
@@ -36,7 +37,8 @@ class EmployeeController extends Controller
     public function create()
     {
         // Get all storages.
-        $storages = Storage::get();
+        $storages = Storage::whereNull('storages.deleted_at')
+            ->get();
         return view('pages.employee.create', compact('storages'));
     }
 
@@ -96,6 +98,13 @@ class EmployeeController extends Controller
         $user->password = $param['password'];
         $user->update();
         return redirect('/employees/detail/' . $id);
+    }
+
+    public function delete($id) {
+        $user = User::find($id);
+        $user->deleted_at = date('Y-m-d h:i:s');
+        $user->update();
+        return redirect('/employees/index');
     }
 
     /**

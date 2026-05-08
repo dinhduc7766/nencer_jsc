@@ -65,6 +65,7 @@ Route::group(['middleware' => 'checkLogin'], function() {
         Route::post('/store', [EmployeeController::class, 'store']);
         Route::get('/detail/{id}', [EmployeeController::class, 'detail']);
         Route::post('/update/{id}', [EmployeeController::class, 'update']);
+        Route::get('/delete/{id}', [EmployeeController::class, 'delete']);
     });
 
 });

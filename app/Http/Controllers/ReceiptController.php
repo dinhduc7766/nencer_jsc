@@ -16,7 +16,7 @@ class ReceiptController extends Controller
      */
     public function index(Request $request)
     {
-        $storages = Storage::get();
+        $storages = Storage::whereNull('storages.deleted_at')->get();
         $param = $request->all();
         // List all receipts.
         $receipts = Receipt::join(
