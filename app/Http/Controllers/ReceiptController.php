@@ -16,7 +16,7 @@ class ReceiptController extends Controller
      */
     public function index(Request $request)
     {
-        $storages = Storage::get();
+        $storages = Storage::whereNull('storages.deleted_at')->get();
         $param = $request->all();
         // List all receipts.
         $receipts = Receipt::join(
@@ -118,6 +118,7 @@ class ReceiptController extends Controller
         $receipt = Receipt::find($id);
         $receipt->status = $param['status'];
         $receipt->update();
+        // Sau khi update xong se quay ve trang cu
         return redirect()->back();
     }
 
