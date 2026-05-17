@@ -32,8 +32,12 @@ Route::group(['prefix' => 'category', 'middleware' => 'checkLogin'], function ()
     Route::get('/destroy/{id}', [DemoController::class, 'destroy']);
 });
 
-Route::group(['middleware' => 'checkLogin'], function() {
-    Route::get('/board', [DashBoardController::class, 'board']);
+Route::group(['middleware' => 'checkLogin'], function () {
+    // Route for board.
+    Route::group(['prefix' => 'board'], function () {
+        Route::get('/', [DashBoardController::class, 'board']);
+        Route::get('/chart-out-stock', [DashBoardController::class, 'calChartOutStock']);
+    });
 
     // Router for categories.
     Route::group(['prefix' => 'categories'], function () {
@@ -67,7 +71,6 @@ Route::group(['middleware' => 'checkLogin'], function() {
         Route::post('/update/{id}', [EmployeeController::class, 'update']);
         Route::get('/delete/{id}', [EmployeeController::class, 'delete']);
     });
-
 });
 
 Route::get('/query-builder', [DemoController::class, 'queryBuilder']);

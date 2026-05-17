@@ -51,13 +51,13 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <tr>
-                    @if (count($receipts) > 0)
-                    @foreach ($receipts as $receipt)
+                @if (count($receipts) > 0)
+                @foreach ($receipts as $receipt)
+                    <tr>
                         <td>{{ $receipt->id }}</td>
                         <td>{{ $receipt->storage_name }}</td>
                         <td>{{ $receipt->category_name }}</td>
-                        <td>{{ $receipt->total_price }}</td>
+                        <td>{{ number_format($receipt->total_price, 0, ',', '.') }}</td>
                         <td>{{ $receipt->quantity }}</td>
                         <td>{{ $receipt->note }}</td>
                         <td>{{ $receipt->delivery_date }}</td>
@@ -70,9 +70,9 @@
                                 Chi tiết
                             </a>
                         </td>
-                    @endforeach
-                    @endif
-                </tr>
+                    </tr>
+                @endforeach
+                @endif
             </tbody>
         </table>
         {{-- phan trang --}}

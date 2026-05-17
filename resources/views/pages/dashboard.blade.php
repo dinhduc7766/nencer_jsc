@@ -4,22 +4,22 @@
     <div id="total" class="col-md-12">
         <div class="row">
             <div id="order-shipping" class="box-total">
-                <h1>99</h1>
+                <h1>{{ number_format($callTotal['receipt_delivery'], 0) }}</h1>
                 <hr>
                 <p>Tổng số đơn hàng đang vận chuyển</p>
             </div>
             <div id="order-in-stock" class="box-total">
-                <h1>99</h1>
+                <h1>{{ number_format($callTotal['receipt_in_stock'], 0) }}</h1>
                 <hr>
                 <p>Tổng số đơn nhập kho</p>
             </div>
             <div id="order-out-stock" class="box-total">
-                <h1>99</h1>
+                <h1>{{ number_format($callTotal['receipt_out_stock'], 0) }}</h1>
                 <hr>
                 <p>Tổng số đơn xuất kho</p>
             </div>
             <div id="order-profit" class="box-total">
-                <h1>99</h1>
+                <h1>{{ number_format($callTotal['profit'], 3) }}%</h1>
                 <hr>
                 <p>Tỷ suất lợi nhuận</p>
             </div>
@@ -31,9 +31,9 @@
             <div id="areaExportInMonth" class="col-md-8">
                 <h4>Biểu đồ thống kê đơn nhập xuất theo tháng.</h4>
                 <div class="col-md-12 d-flex">
-                    <input type="datetime-local" id="txtChooseMonthForChart1" class="form-control txt-choose-month">
+                    <input type="month" id="txtChooseMonthForChart1" class="form-control txt-choose-month">
                     &nbsp;
-                    <button class="btn btn-primary">Thống kê</button>
+                    <button class="btn btn-primary" id="btnStatisticChart1">Thống kê</button>
                 </div>
                 <div class="clear-fix"></div>
                 <div>

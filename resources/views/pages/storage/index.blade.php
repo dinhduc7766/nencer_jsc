@@ -18,7 +18,7 @@
                     <tr>
                         <td>{{ $storage->id }}</td>
                         <td>{{ $storage->name }}</td>
-                        <td>{{ number_format($storage->cost, 0) }}</td>
+                        <td>{{ number_format($storage->cost, 0, ',', '.') }}</td>
                         <td>{{ $storage->total }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{ url('/storages/edit/' . $storage->id) }}">Chi tiết</a>
